@@ -5,16 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dynamic Charts</title>
     <link rel="icon" href="/img/favicon.png" />
+    <link rel="stylesheet" href="/style.css" />
 
 </head>
 <body>
     <label for="chart-type">Choose Chart Type:</label>
     <select id="chart-type">
-        <option value="line">Line Chart</option>
         <option value="scatter">Scatter Chart</option>
+        <option value="line">Line Chart</option>
     </select>
     <div id="chart-container" style="width: 600px; height: 400px; border: 1px solid #ccc;"></div>
-
+    
     <script type="module" src="src/main.ts"></script>
 </body>
 </html>
