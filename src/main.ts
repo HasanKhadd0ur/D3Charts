@@ -1,12 +1,6 @@
-import { chartRegistry } from "./chartRegistry";
-import { LineChart } from "./lineChart";
-import { ScatterChart } from "./scatterChart";
 import { DataLoader } from "./Loaders/dataLoader";
 import { renderChart } from "./renderChart";
-
-// Register chart types
-chartRegistry.register('scatter', ScatterChart);
-chartRegistry.register('line', LineChart);
+import { chartRegistry } from "./config/registrationConfig";
 
 
 // Initial chart type
@@ -26,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 })
 
-DataLoader('/data/vancouver_trails.csv',1,
+DataLoader('/data/sp_500_index.csv',1,
     // Add event listener for the dropdown menu
     (dat : any[])=>{
         data =dat;
