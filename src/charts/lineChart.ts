@@ -2,87 +2,97 @@ import { BaseChart } from './baseChart';
 import * as d3 from 'd3';
 
 export class LineChart extends BaseChart {
-    
+    lineGenerator: d3.Line<any>;
+    linePath: d3.Selection<SVGPathElement, unknown, HTMLElement, undefined>;
+
     protected initVis() {
-
         const vis = this;
-        const { containerWidth, containerHeight, margin } = vis.config;
 
-        const width = containerWidth - margin.left - margin.right;
-        const height = containerHeight - margin.top - margin.bottom;
+        super.initVis();
+    
+        this.setupScales();
+        vis.createTooltip();
+        
+        // Define the line generator
+        vis.lineGenerator = d3.line()
+            .x((d: any) => vis.xScale(d.xValue))
+            .y((d: any) => vis.yScale(d.yValue))
+            .curve(d3.curveLinear);
 
-        vis.svg = d3.select(vis.config.parentElement)
-            .append('svg')
-            .attr('width', containerWidth)
-            .attr('height', containerHeight);
+        // Line path to define the line chart
+        vis.linePath = vis.chart.append('path')
+            .attr('class', 'line')
+            .attr('fill', 'none')
+            .attr('stroke', vis.config.lineColor)
+            .attr('stroke-width', 2);
 
-        vis.chart = vis.svg.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`);
+        // Create a tooltip circle
+        vis.tooltipCircle = vis.chart.append('circle')
+            .attr('class', 'tooltip-circle')
+            .attr('r', 5)
+            .attr('fill', vis.config.lineColor)
+            .attr('stroke', 'white')
+            .attr('stroke-width', 2)
+            .style('opacity', 0);
 
-        vis.svg.append('text')
-            .attr('x', containerWidth / 2)
-            .attr('y', margin.top / 2)
-            .attr('text-anchor', 'middle')
-            .attr('fill', vis.config.textColor)
-            .text(vis.config.chartTitle);
+        // Update the chart
+        vis.updateVis();
 
-        vis.xScale = d3.scaleLinear().range([0, width]);
-        vis.yScale = d3.scaleLinear().range([height, 0]);
-
-        vis.xAxis = vis.chart.append('g').attr('transform', `translate(0, ${height})`);
-        vis.yAxis = vis.chart.append('g');
     }
+
 
     protected renderVis() {
         const vis = this;
 
-        const line = d3.line<any>()
-            .x(d => vis.xScale(d.xValue))
-            .y(d => vis.yScale(d.yValue));
+        // Draw the line path
+        vis.linePath.datum(vis.data)
+            .attr('d', vis.lineGenerator);
 
-        vis.chart.selectAll('.line')
-            .data([vis.data])
-            .join('path')
-            .attr('class', 'line')
-            .attr('fill', 'none')
-            .attr('stroke', vis.config.color)
-            .attr('stroke-width', 2)
-            .attr('d', line);
+        // Update the axes
+        vis.xAxis.call(d3.axisBottom(vis.xScale)
+            .ticks(6)
+            .tickFormat((domainValue: any) => d3.timeFormat('%b %Y')(new Date(domainValue))));
 
-        vis.xAxis.call(d3.axisBottom(vis.xScale));
-        vis.yAxis.call(d3.axisLeft(vis.yScale));
-    }
-    protected onMouseOver(): void {
-        const vis =this;
-        vis.tooltip.style("opacity", 1);
-        vis.tooltip.style("opacity", 1);
+        vis.yAxis.call(d3.axisLeft(vis.yScale).ticks(6));
     }
 
-    protected onMouseMove(event :any){
-        const vis =this;
+
+    protected onMouseMove(event: any) {
+        const vis = this;
 
         const [mouseX] = d3.pointer(event);
 
-        //revers sale to get the date fur to the x pos of the mouse 
+        // Reverse scale to get the date corresponding to the x position of the mouse
         const xDate = vis.xScale.invert(mouseX);
 
-        // find the closest data point
+        // Find the closest data point
         const closestPoint = vis.data.reduce((a, b) => {
             return Math.abs(b.xValue - xDate) < Math.abs(a.xValue - xDate) ? b : a;
         });
 
-        // tooltip text 
-        vis.tooltip
-            .html(`<strong>Date:</strong> ${d3.timeFormat("%b %d, %Y")(closestPoint.xValue)}<br/>
-                   <strong>Value:</strong> ${closestPoint.xValue}`)
-            .style("left", (event.pageX + 10) + "px")
-            .style("top", (event.pageY - 28) + "px");
 
-        // position the tooltip circle
+        // Tooltip text
         vis.tooltip
-            .attr("cx", vis.xScale(closestPoint.xValue))
-            .attr("cy", vis.yScale(closestPoint.yValue));
+            .html(`<strong>Date:</strong> ${d3.timeFormat(vis.config.timeFormat)(closestPoint.xValue)}<br/>
+                   <strong>Value:</strong> ${closestPoint.yValue}`)
+            .style('left', `${event.pageX + 10}px`)
+            .style('top', `${event.pageY - 28}px`);
 
+        // Position the tooltip circle
+        vis.tooltipCircle
+            .attr('cx', vis.xScale(closestPoint.xValue))
+            .attr('cy', vis.yScale(closestPoint.yValue))
+            .style('opacity', 1);
     }
 
+    protected mapData(data: any[]): void {
 
+        const vis = this;
+
+        // Parse numeric values and map fields name
+        vis.data = data.map(d => ({
+            xValue: d3.timeParse(vis.config.timeFormat)(d[this.config.xField]),
+            yValue: d[this.config.yField]
+        }));
+    }
 }
