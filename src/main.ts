@@ -15,12 +15,22 @@ document.addEventListener('DOMContentLoaded', () => {
     chartTypeSelect?.addEventListener('change', (event) => {
         const target = event.target as HTMLSelectElement;
         currentChartType = target.value;
-        renderChart(currentChartType,data,chartRegistry);
+        DataLoader(chartRegistry.get(currentChartType).chartConfig?.dataSetURL!,1,
+            // Add event listener for the dropdown menu
+            (dat : any[])=>{
+                data =dat;
+                console.log(data)
+                renderChart(currentChartType,data,chartRegistry);
+    
+           }
+            
+        )
+        
     });
 
 })
 
-DataLoader('/data/sp_500_index.csv',1,
+DataLoader(chartRegistry.get(currentChartType).chartConfig?.dataSetURL!,1,
     // Add event listener for the dropdown menu
     (dat : any[])=>{
         data =dat;

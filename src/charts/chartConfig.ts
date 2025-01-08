@@ -11,4 +11,5 @@ export interface ChartConfig {
     chartTitle: string;
     dataSetURL:string;
     lineColor:string;
+    timeFormat:string;
 }

@@ -94,3 +94,29 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+.tooltip {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: rgb(243, 243, 243);
+  padding: 8px;
+  border-radius: 5px;
+  pointer-events: none;
+  font-size: 0.9em;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  transition: opacity 0.2s ease;
+  white-space: nowrap;
+}
+
+defs {
+  display: block;
+}
+
+.area {
+  stroke-width: 2px;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.area:hover {
+  opacity: 1;
+}

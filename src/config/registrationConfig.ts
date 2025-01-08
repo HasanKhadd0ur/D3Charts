@@ -8,7 +8,7 @@ const chartRegistry = new ChartRegistry();
 
 
 // Register chart types
-chartRegistry.register('scatter', ScatterChart,lineChartConfig);
-chartRegistry.register('line', LineChart,ScatterChartConfig);
+chartRegistry.register('scatter', ScatterChart,ScatterChartConfig);
+chartRegistry.register('line', LineChart,lineChartConfig);
 
 export  { chartRegistry}; 
