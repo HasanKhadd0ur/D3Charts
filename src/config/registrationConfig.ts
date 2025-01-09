@@ -1,6 +1,6 @@
 import { ChartRegistry } from "../chartRegistry";
-import { ScatterChart } from "../charts/scatterChart";
-import { LineChart } from "../charts/lineChart";
+import { ScatterChart } from "../scatterChart";
+import { LineChart } from "../lineChart";
 import { lineChartConfig, ScatterChartConfig } from "./chartsConfigurating";
 
 const chartRegistry = new ChartRegistry();
