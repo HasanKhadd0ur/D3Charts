@@ -1,4 +1,4 @@
-import { ChartConfig } from "./charts/chartConfig";
+import { ChartConfig } from "./chartConfig";
 
 export class ChartRegistry {
     private chartTypes: { [key: string]: any } = {};

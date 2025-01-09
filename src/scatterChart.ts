@@ -2,7 +2,8 @@ import { BaseChart } from "./baseChart";
 import * as d3 from 'd3'
 
 export class ScatterChart extends BaseChart {
-    colorScale: d3.ScaleOrdinal<string, unknown, never>;
+    protected colorScale: any;
+    protected colorValue: (d: any) => string;
 
     protected initVis() {
      
@@ -22,7 +23,8 @@ export class ScatterChart extends BaseChart {
             .append("div")
             .attr("class", "tooltip")
             .style("opacity", 0);
-  
+               
+
           
         // Ooerlay rectangle for capturing mouse events
         vis.overlay = vis.chart.append("rect")
@@ -30,30 +32,46 @@ export class ScatterChart extends BaseChart {
             .attr("height", vis.height)
             .style("opacity", 0)
         
+        vis.colorValue = d => d.difficulty as string;
     }
 
 
+    public updateVis() {
+        let vis = this;
+
+        // Set the scale input domains
+        vis.xScale.domain([0, d3.max(vis.data, d => d.xValue)*1.4]);
+        vis.yScale.domain([0, d3.max(vis.data,  d => d.yValue)*2.9]);
+    
+        vis.renderVis();
+    }
     
     protected renderVis() {
         const vis = this;
 
         const points = vis.chart.selectAll('.point')
-            .data(vis.data, (d: any) => d.id);
+            .data(vis.rawData, (d: any) => d.id);
+        
+        vis.colorScale = d3.scaleOrdinal()
+            .range(['#d3eecd', '#7bc77e', '#2a8d46'])
+            .domain(['Easy', 'Intermediate', 'Difficult']);
 
+       
         points.enter()
             .append('circle')
             .attr('class', 'point')
             .attr('r', 4)
-            .attr('cx', d => vis.xScale(d.xValue))
-            .attr('cy', d => vis.yScale(d.yValue))
+            .attr('cx', d => vis.xScale(d[vis.config.xField]))
+            .attr('cy', d => vis.yScale(d[vis.config.yField]))
+            .attr('fill', d => vis.colorScale(d.difficulty ))
             .on("mouseover", (event,d) => this.onMouseOver(event,d))
             .on("mousemove", (event) => this.onMouseMove(event))
             .on("mouseout", () => this.onMouseOut())
             .transition().duration(300)
-            .attr('cx', d => vis.xScale(d.xValue))
-            .attr('cy', d => vis.yScale(d.yValue));
+            .attr('cx', d => vis.xScale(d[vis.config.xField]))
+            .attr('cy', d => vis.yScale(d[vis.config.yField]));
 
-        points.exit().remove();
+       points.exit().remove();
 
         vis.xAxis.call(d3.axisBottom(vis.xScale).ticks(6));
         
@@ -65,7 +83,7 @@ export class ScatterChart extends BaseChart {
         const vis= this;
         
         vis.tooltip.style('opacity', 1)
-                .html(`<div>Time: ${d.xValue} hrs</div><div>Distance: ${d.yValue} km</div></div>`);
+                .html(`<div>Time: ${d[vis.config.xField]} hrs</div><div>Distance: ${d[vis.config.yField]} km</div></div>`);
     }
 
     protected onMouseOut() {

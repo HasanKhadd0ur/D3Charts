@@ -1,4 +1,4 @@
-import { ChartConfig } from "../charts/chartConfig";
+import { ChartConfig } from "../chartConfig";
 
 // Default Configuration for line Chart
 export const ScatterChartConfig : ChartConfig = {
@@ -13,7 +13,7 @@ export const ScatterChartConfig : ChartConfig = {
     lineColor: 'black',
     dataSetURL:'/data/vancouver_trails.csv',
     fields:['trail','region','difficulty','time','distance','season'],
-    chartTitle: 'Dynamic Chart',
+    chartTitle: 'Vancouver Trails',
     timeFormat:"%Y-%m-%d" 
 };
 
@@ -27,9 +27,9 @@ export const lineChartConfig : ChartConfig = {
     yField: 'close',
     color: 'steelblue',
     textColor: 'black',
-    lineColor: 'black',    
+    lineColor: 'steelblue',    
     dataSetURL:'/data/sp_500_index.csv',
     fields:['date','close'],
-    chartTitle: 'Dynamic Chart',
+    chartTitle: 'SP 500 Index ',
     timeFormat:"%Y-%m-%d" 
 };

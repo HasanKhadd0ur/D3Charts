@@ -22,26 +22,6 @@ a:hover {
   color: #535bf2;
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -55,13 +35,6 @@ h1 {
   filter: drop-shadow(0 0 2em #3178c6aa);
 }
 
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
 
 button {
   border-radius: 8px;
@@ -94,6 +67,7 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
 .tooltip {
   position: absolute;
   background-color: rgba(0, 0, 0, 0.8);
@@ -107,9 +81,6 @@ button:focus-visible {
   white-space: nowrap;
 }
 
-defs {
-  display: block;
-}
 
 .area {
   stroke-width: 2px;
@@ -120,3 +91,114 @@ defs {
 .area:hover {
   opacity: 1;
 }
+
+/* Legend */
+.legend {
+  margin: 20px 0;
+  list-style: none;
+  padding: 0;
+}
+.legend li {
+  display: inline-block;
+  margin: 0 20px 0 0;
+}
+.legend-e {
+  width: 12px;
+  height: 12px;
+  margin-right: 3px;
+  display: inline-block;
+}
+.legend-e.easy {
+  background: #d3eecd;
+}
+.legend-e.intermediate {
+  background: #7bc77e;
+}
+.legend-e.difficult {
+  background: #2a8d46;
+}
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  background-color: #f9f9f9;
+}
+
+.controls-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 20px;
+  width: 20%;
+  background-color: #ffffff;
+  border-right: 1px solid #ccc;
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.controls {
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+.control-label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+.dropdown {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f5f5f5;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dropdown:hover {
+  background-color: #e0e0e0;
+}
+
+.filters {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.filters label {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #555;
+}
+
+.filters input[type="checkbox"] {
+  margin-right: 10px;
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
+.filters input[type="checkbox"]:checked + span {
+  color: #2a8d46; /* Highlight checked filter text */
+  font-weight: bold;
+}
+
+#chart-container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
