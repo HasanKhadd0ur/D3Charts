@@ -9,11 +9,29 @@
 
 </head>
 <body>
-    <label for="chart-type">Choose Chart Type:</label>
-    <select id="chart-type">
-        <option value="scatter">Scatter Chart</option>   
-        <option value="line">Line Chart</option>
-     </select>
+    <div class="controls-container">
+        <div class="controls">
+            <label for="chart-type" class="control-label">Choose Chart Type:</label>
+            <select id="chart-type" class="dropdown">
+                <option value="scatter">Scatter Chart</option>
+                <option value="line">Line Chart</option>
+            </select>
+        </div>
+        <div class="filters">
+            <label>
+                <input type="checkbox" id="filter-easy" checked>
+                Easy
+            </label>
+            <label>
+                <input type="checkbox" id="filter-intermediate" checked>
+                Intermediate
+            </label>
+            <label>
+                <input type="checkbox" id="filter-difficult" checked>
+                Difficult
+            </label>
+        </div>
+    </div>
     <div id="chart-container" ></div>
     
     <script type="module" src="src/main.ts"></script>
